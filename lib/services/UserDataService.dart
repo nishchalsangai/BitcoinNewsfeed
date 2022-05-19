@@ -4,7 +4,6 @@ import '../models/User.dart';
 
 class UserDataService {
   var _userId;
-  late var logUser;
   late CollectionReference _users;
 
   UserDataService({String? userId}) {
@@ -26,7 +25,7 @@ class UserDataService {
     String? userEmail,
   }) async {
     try {
-      await _users.doc(logUser._userId).set({
+      await _users.doc(_userId).set({
         'userId': userId,
         'userName': userName,
         'userEmail': userEmail,
