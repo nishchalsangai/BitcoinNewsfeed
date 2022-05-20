@@ -12,12 +12,14 @@ class NewsCard extends StatelessWidget {
     required this.publishedAt,
     required this.imgurl,
     required this.summary,
+    required this.addOrRemove,
   }) : super(key: key);
   final String title;
   final String sourceName;
   final String publishedAt;
   final String imgurl;
   final String summary;
+  final dynamic addOrRemove;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,7 +75,8 @@ class NewsCard extends StatelessWidget {
                   ),
                 ],
               ),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.bookmark_add_outlined))
+              IconButton(
+                  onPressed: addOrRemove, icon: const Icon(Icons.bookmark_add_outlined))
             ],
           ),
           SizedBox(
@@ -81,28 +84,28 @@ class NewsCard extends StatelessWidget {
           ),
           imgurl != "unknown"
               ? CachedNetworkImage(
-            fit: BoxFit.contain,
-            imageUrl: imgurl,
-            width: MediaQuery.of(context).size.width,
-            progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-                child: CircularProgressIndicator(
-                  value: downloadProgress.progress,
-                  strokeWidth: 1,
-                )),
-            errorWidget: (context, url, error) => const SizedBox(),
-          )
+                  fit: BoxFit.contain,
+                  imageUrl: imgurl,
+                  width: MediaQuery.of(context).size.width,
+                  progressIndicatorBuilder: (context, url, downloadProgress) => Center(
+                      child: CircularProgressIndicator(
+                    value: downloadProgress.progress,
+                    strokeWidth: 1,
+                  )),
+                  errorWidget: (context, url, error) => const SizedBox(),
+                )
               : const SizedBox(),
           SizedBox(
             height: 8.h,
           ),
           summary != "unknown"
               ? Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0.w),
-            child: Text(
-              summary,
-              style: AppTheme.body2,
-            ),
-          )
+                  padding: EdgeInsets.symmetric(horizontal: 8.0.w),
+                  child: Text(
+                    summary,
+                    style: AppTheme.body2,
+                  ),
+                )
               : const SizedBox(),
         ],
       ),

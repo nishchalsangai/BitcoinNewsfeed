@@ -8,29 +8,32 @@ class BookMarksService {
   late final _userId;
 
   BookMarksService(String userId) {
-    _bookmarks = FirebaseFirestore.instance.collection("Bookmarks");
     _userId = userId;
+    _bookmarks = FirebaseFirestore.instance.collection("BookmarksData");
   }
 
   Future<String> generateNewBookmark() async {
     return _bookmarks.doc().id;
   }
 
-  Future<String> addBookmark({
+  Future<String?> addBookmark({
     required String bookmarkId,
     required String userId,
-    required News news,
+    required Map news,
   }) async {
-    return await _bookmarks.doc(bookmarkId).set({
-      "bookmarkId": bookmarkId,
-      "userId": userId,
-      "news": news,
-      "bookmarkAddedTime": DateTime.now().microsecondsSinceEpoch
-    }).then((value) {
-      return "Added to bookmarks";
-    }).catchError((error) {
-      return error.message.toString();
-    });
+    try {
+      await _bookmarks.doc(bookmarkId).set({
+        "bookmarkId": bookmarkId,
+        "userId": userId,
+        "news": news,
+        "bookmarkAddedTime": DateTime.now().microsecondsSinceEpoch
+        }).then((value) {
+        return "Bookmark Added";
+      });
+    } on FirebaseException catch (e) {
+      return e.message;
+    }
+    return null;
   }
 
   Future<String> removeBookmark(String bookmarkId) async {

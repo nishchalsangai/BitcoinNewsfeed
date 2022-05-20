@@ -67,6 +67,19 @@ class News extends Equatable {
     }
   }
 
+  Map<dynamic, dynamic> toMap(News news) {
+    return {
+      "source": news._source,
+      "author": news._author,
+      "description": news._description,
+      "url": news._url,
+      "urlToImage": news._urlToImage,
+      "publishedAt": news._publishedAt,
+      "content": news._content,
+      "title": news._title
+    };
+  }
+
   Map get source {
     if (_source.isEmpty) {
       return {};

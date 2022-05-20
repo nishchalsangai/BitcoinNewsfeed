@@ -3,13 +3,13 @@ import 'News.dart';
 class Bookmarks {
   late String _bookMarksId;
   late String _userId;
-  late News _news;
+  late Map _news;
   late double _bookmarkAddedTime;
 
   Bookmarks(
       {required String bookMarksId,
       required String userId,
-      required News news,
+      required Map news,
       required double bookmarkAddedTime}) {
     _bookMarksId = bookMarksId;
     _userId = userId;
@@ -33,7 +33,7 @@ class Bookmarks {
     return _userId;
   }
 
-  News get news {
+  Map get news {
     return _news;
   }
 

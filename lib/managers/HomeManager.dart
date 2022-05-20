@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:untitled/services/BookMarksService.dart';
 import 'package:untitled/services/NewsFeedService.dart';
 
 import '../models/News.dart';
@@ -10,6 +11,7 @@ class HomeManager extends ChangeNotifier {
   late bool _isLoading;
   late int _currentPage;
   late NewsFeedService _newsFeedService;
+  late BookMarksService _bookMarksService;
   late List<News> _newsBasket;
   late ScrollController _scrollControl;
   late StreamSubscription _newsStream;
@@ -19,6 +21,7 @@ class HomeManager extends ChangeNotifier {
   HomeManager(this.userId) {
     _isLoading = true;
     _newsFeedService = NewsFeedService();
+    _bookMarksService = BookMarksService(userId);
     _currentPage = 0;
     _newsBasket = [];
     _scrollControl = ScrollController();
@@ -57,6 +60,12 @@ class HomeManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  addAndRemoveBookmark(News news)async{
+    final id = await _bookMarksService.generateNewBookmark();
+    print("heyeeheyeye");
+    _bookMarksService.addBookmark(bookmarkId:id, userId: userId, news: news.toMap(news));
+  }
+
   List<News> get newsBasket {
     return _newsBasket;
   }
@@ -68,6 +77,8 @@ class HomeManager extends ChangeNotifier {
   ScrollController get scrollControl {
     return _scrollControl;
   }
+
+
 
   @override
   void dispose() {

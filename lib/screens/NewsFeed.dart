@@ -35,6 +35,7 @@ class newsFeed extends StatelessWidget {
                     publishedAt: homeManager.newsBasket[index].publishedAt,
                     imgurl: homeManager.newsBasket[index].urlToImage,
                     summary: homeManager.newsBasket[index].content,
+                    addOrRemove: () => homeManager.addAndRemoveBookmark(homeManager.newsBasket[index]),
                   );
                 }),
             SizedBox(
