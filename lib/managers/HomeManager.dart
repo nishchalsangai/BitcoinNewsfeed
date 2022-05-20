@@ -11,43 +11,46 @@ class HomeManager extends ChangeNotifier {
   late int _currentPage;
   late NewsFeedService _newsFeedService;
   late List<News> _newsBasket;
+  late ScrollController _scrollControl;
   late StreamSubscription _newsStream;
-  late RefreshController refreshController;
+  late bool newsAvailable;
 
   late final userId;
   HomeManager(this.userId) {
+    _isLoading = true;
     _newsFeedService = NewsFeedService();
-    _currentPage = 1;
+    _currentPage = 0;
     _newsBasket = [];
-    refreshController = RefreshController(initialRefresh: true);
+    _scrollControl = ScrollController();
+    _scrollControl.addListener(_scrollListener);
+    onLoading();
     NewsBasket();
+  }
+
+  _scrollListener() async {
+    if (_scrollControl.offset >= _scrollControl.position.maxScrollExtent &&
+        !_scrollControl.position.outOfRange) {
+      Future.delayed(Duration(seconds: 2)).then((value) {
+        onLoading();
+        toggleLoading();
+      });
+    }
   }
 
   NewsBasket() {
     _newsStream = _newsFeedService.newsBucketStream.listen((news) {
+      print(news.description);
       _newsBasket.add(news);
       notifyListeners();
     });
-  }
-
-  onRefresh() async {
-    final result = await _newsFeedService.getNewsFeed(isRefresh: true);
-    if (result) {
-      refreshController.refreshCompleted();
-    } else {
-      refreshController.refreshFailed();
-    }
   }
 
   onLoading() async {
     _currentPage++;
     final result = await _newsFeedService.getNewsFeed(currentPage: _currentPage);
     if (result) {
-      refreshController.loadComplete();
       notifyListeners();
-    } else {
-      refreshController.loadFailed();
-    }
+    } else {}
   }
 
   toggleLoading() {
@@ -63,4 +66,14 @@ class HomeManager extends ChangeNotifier {
     return _isLoading;
   }
 
+  ScrollController get scrollControl {
+    return _scrollControl;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _newsStream.cancel();
+  }
 }

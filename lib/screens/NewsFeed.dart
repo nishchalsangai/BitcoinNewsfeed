@@ -15,107 +15,130 @@ class newsFeed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<HomeManager>(builder: (context, homeManager, child) {
-      return SmartRefresher(
-        controller: homeManager.refreshController,
-        enablePullUp: true,
-        onRefresh: homeManager.onRefresh,
-        onLoading: homeManager.onLoading,
-        child: ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            itemCount: homeManager.newsBasket.length,
-            itemBuilder: (context, index) {
-              final n = homeManager.newsBasket[index];
-              return Container(
-                margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-                padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 13.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16.r),
-                  color: Colors.white,
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: AppTheme.grey.withOpacity(0.2),
-                      blurRadius: 16,
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        homeManager.newsBasket[index].title,
-                        style: AppTheme.title,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 2.h),
-                              child: RichText(
-                                text: TextSpan(text: "Source ", style: AppTheme.caption, children: [
-                                  TextSpan(
-                                    text: homeManager.newsBasket[index].sourceName,
-                                    style: AppTheme.caption2,
-                                  ),
-                                ]),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 2.h),
-                              child: RichText(
-                                text: TextSpan(
-                                    text: "Published At ",
-                                    style: AppTheme.caption,
-                                    children: [
-                                      TextSpan(
-                                        text: homeManager.newsBasket[index].publishedAt,
-                                        style: AppTheme.caption2,
-                                      )
-                                    ]),
-                              ),
-                            ),
-                          ],
+      return SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        controller: homeManager.scrollControl,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ListView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: homeManager.newsBasket.length,
+                itemBuilder: (context, index) {
+                  final n = homeManager.newsBasket[index];
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                    padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 13.h),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.r),
+                      color: Colors.white,
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: AppTheme.grey.withOpacity(0.2),
+                          blurRadius: 16,
                         ),
-                        IconButton(onPressed: () {}, icon: Icon(Icons.bookmark_add_outlined))
                       ],
                     ),
-                    SizedBox(
-                      height: 8.h,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            homeManager.newsBasket[index].title,
+                            style: AppTheme.title,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 2.h),
+                                  child: RichText(
+                                    text: TextSpan(
+                                        text: "Source ",
+                                        style: AppTheme.caption,
+                                        children: [
+                                          TextSpan(
+                                            text: homeManager.newsBasket[index].sourceName,
+                                            style: AppTheme.caption2,
+                                          ),
+                                        ]),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 2.h),
+                                  child: RichText(
+                                    text: TextSpan(
+                                        text: "Published At ",
+                                        style: AppTheme.caption,
+                                        children: [
+                                          TextSpan(
+                                            text: homeManager.newsBasket[index].publishedAt,
+                                            style: AppTheme.caption2,
+                                          )
+                                        ]),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            IconButton(onPressed: () {}, icon: Icon(Icons.bookmark_add_outlined))
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8.h,
+                        ),
+                        homeManager.newsBasket[index].urlToImage != "unknown"
+                            ? CachedNetworkImage(
+                                fit: BoxFit.contain,
+                                imageUrl: homeManager.newsBasket[index].urlToImage,
+                                width: MediaQuery.of(context).size.width,
+                                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                    Center(
+                                        child: CircularProgressIndicator(
+                                  value: downloadProgress.progress,
+                                  strokeWidth: 1,
+                                )),
+                                errorWidget: (context, url, error) => const SizedBox(),
+                              )
+                            : const SizedBox(),
+                        SizedBox(
+                          height: 8.h,
+                        ),
+                        homeManager.newsBasket[index].content != "unknown"
+                            ? Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.0.w),
+                                child: Text(
+                                  homeManager.newsBasket[index].content,
+                                  style: AppTheme.body2,
+                                ),
+                              )
+                            : const SizedBox(),
+                      ],
                     ),
-                    homeManager.newsBasket[index].urlToImage != "unknown"
-                        ? CachedNetworkImage(
-                      fit: BoxFit.contain,
-                      imageUrl: homeManager.newsBasket[index].urlToImage,
-                      width: MediaQuery.of(context).size.width,
-                      progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-                          child: CircularProgressIndicator(
-                            value: downloadProgress.progress,
-                            strokeWidth: 1,
-                          )),
-                      errorWidget: (context, url, error) => const SizedBox(),
-                    )
-                        : const SizedBox(),
-                    SizedBox(
-                      height: 8.h,
-                    ),
-                    homeManager.newsBasket[index].content != "unknown"
-                        ? Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0.w),
-                      child: Text(
-                        homeManager.newsBasket[index].content,
-                        style: AppTheme.body2,
-                      ),
-                    )
-                        : const SizedBox(),
-                  ],
-                ),
-              );
-            }),
+                  );
+                }),
+            SizedBox(
+              height: 30.h,
+            ),
+            homeManager.isLoading
+                ? const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xFF075E54),
+                    strokeWidth: 1,
+                  ),
+                )
+                : const SizedBox(),
+            SizedBox(
+              height: 30.h,
+            ),
+          ],
+        ),
       );
     });
   }

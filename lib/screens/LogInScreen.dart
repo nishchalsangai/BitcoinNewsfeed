@@ -61,7 +61,7 @@ class LogInScreen extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.r),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
                         primary: AppTheme.nearlyWhite,
                         shadowColor: AppTheme.chipBackground,

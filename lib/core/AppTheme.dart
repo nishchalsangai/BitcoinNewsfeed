@@ -137,6 +137,4 @@ class AppTheme {
     color: lightText, // was lightText
   );
 
-  static TextStyle tag_txt = TextStyle(
-      letterSpacing: .5, fontWeight: FontWeight.w500, fontSize: 10.sp, color: Colors.white);
 }
