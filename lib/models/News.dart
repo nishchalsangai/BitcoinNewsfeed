@@ -10,6 +10,7 @@ class News extends Equatable {
   late final String? _urlToImage;
   late final String? _publishedAt;
   late final String _content;
+
   News({
     required Map source,
     required String? author,

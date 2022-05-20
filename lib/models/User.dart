@@ -2,13 +2,13 @@ class User {
   late String _userId;
   late String _emailId;
   late String _displayName;
-  late double? _userCreatedTime;
+  late int? _userCreatedTime;
 
   User(
       {required String userId,
       required String emailId,
       required String displayName,
-      required double? userCreatedTime}) {
+      required int? userCreatedTime}) {
     _userId = userId;
     _emailId = emailId;
     _displayName = displayName;
@@ -44,7 +44,7 @@ class User {
     return _displayName;
   }
 
-  double get userCreatedTime {
+  int get userCreatedTime {
     if (_userCreatedTime == null) {
       return -1;
     }

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/managers/AuthManager.dart';
 import 'package:untitled/managers/HomeManager.dart';
+import 'Bookmarks.dart';
 import 'NewsFeed.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -55,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           controller: _tabController,
           children: const [
             newsFeed(),
-            Text("Bookmarks"),
+            BookmarksScreen(),
           ],
         ),
       ),

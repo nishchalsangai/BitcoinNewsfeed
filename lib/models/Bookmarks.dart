@@ -4,13 +4,13 @@ class Bookmarks {
   late String _bookMarksId;
   late String _userId;
   late Map _news;
-  late double _bookmarkAddedTime;
+  late int _bookmarkAddedTime;
 
   Bookmarks(
       {required String bookMarksId,
       required String userId,
       required Map news,
-      required double bookmarkAddedTime}) {
+      required int bookmarkAddedTime}) {
     _bookMarksId = bookMarksId;
     _userId = userId;
     _news = news;
@@ -37,7 +37,7 @@ class Bookmarks {
     return _news;
   }
 
-  double get bookmarkAddedTime {
+  int get bookmarkAddedTime {
     return _bookmarkAddedTime;
   }
 }

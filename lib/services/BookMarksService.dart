@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:untitled/models/Bookmarks.dart';
 
-import '../models/News.dart';
-
 class BookMarksService {
   late CollectionReference _bookmarks;
   late final _userId;
@@ -27,7 +25,7 @@ class BookMarksService {
         "userId": userId,
         "news": news,
         "bookmarkAddedTime": DateTime.now().microsecondsSinceEpoch
-        }).then((value) {
+      }).then((value) {
         return "Bookmark Added";
       });
     } on FirebaseException catch (e) {
@@ -49,6 +47,22 @@ class BookMarksService {
     return "";
   }
 
+  removeBookmarksFromNewsFeed(Map news) async {
+    List<Bookmarks> bookmarksId = [];
+    await _bookmarks
+        .where("userId", isEqualTo: _userId)
+        .where("news", isEqualTo: news)
+        .get()
+        .then((snap) async {
+      for (var bookmarkSnap in snap.docs) {
+        final a = Bookmarks.fromMap(bookmarkSnap.data() as Map<String, dynamic>);
+        print(a.bookMarksId);
+        bookmarksId.add(Bookmarks.fromMap(bookmarkSnap.data() as Map<String, dynamic>));
+      }
+    });
+    return removeBookmark(bookmarksId[0].bookMarksId);
+  }
+
   Future<List<Bookmarks>> get allBookmarks async {
     List<Bookmarks> bookmarkBasket = [];
     await _bookmarks
@@ -56,8 +70,10 @@ class BookMarksService {
         .orderBy("bookmarkAddedTime")
         .get()
         .then((snap) async {
-      snap.docs.forEach((bookmarkSnap) =>
-          bookmarkBasket.add(Bookmarks.fromMap(bookmarkSnap.data as Map<dynamic, dynamic>)));
+      for (var bookmarkSnap in snap.docs) {
+        print(bookmarkSnap.data);
+        bookmarkBasket.add(Bookmarks.fromMap(bookmarkSnap.data() as Map<String, dynamic>));
+      }
     });
     return bookmarkBasket;
   }

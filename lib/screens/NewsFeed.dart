@@ -1,10 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-
-import '../core/AppTheme.dart';
 import '../core/widgets.dart';
 import '../managers/HomeManager.dart';
 
@@ -35,7 +31,9 @@ class newsFeed extends StatelessWidget {
                     publishedAt: homeManager.newsBasket[index].publishedAt,
                     imgurl: homeManager.newsBasket[index].urlToImage,
                     summary: homeManager.newsBasket[index].content,
-                    addOrRemove: () => homeManager.addAndRemoveBookmark(homeManager.newsBasket[index]),
+                    addOrRemove: () =>
+                        homeManager.addAndRemoveBookmark(homeManager.newsBasket[index], null),
+                    iconSwitch: false,
                   );
                 }),
             SizedBox(

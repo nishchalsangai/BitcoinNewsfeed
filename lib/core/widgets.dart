@@ -13,6 +13,7 @@ class NewsCard extends StatelessWidget {
     required this.imgurl,
     required this.summary,
     required this.addOrRemove,
+    required this.iconSwitch,
   }) : super(key: key);
   final String title;
   final String sourceName;
@@ -20,6 +21,7 @@ class NewsCard extends StatelessWidget {
   final String imgurl;
   final String summary;
   final dynamic addOrRemove;
+  final bool iconSwitch;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -76,7 +78,10 @@ class NewsCard extends StatelessWidget {
                 ],
               ),
               IconButton(
-                  onPressed: addOrRemove, icon: const Icon(Icons.bookmark_add_outlined))
+                  onPressed: addOrRemove,
+                  icon: iconSwitch
+                      ? const Icon(Icons.bookmark)
+                      : const Icon(Icons.bookmark_add_outlined))
             ],
           ),
           SizedBox(
