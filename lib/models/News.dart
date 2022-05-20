@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 
 class News {
   late final Map _source;
-  late final String _author;
+  late final String? _author;
   late final String _title;
-  late final String _description;
+  late final String? _description;
   late final String _url;
-  late final String _urlToImage;
-  late final String _publishedAt;
+  late final String? _urlToImage;
+  late final String? _publishedAt;
   late final String _content;
   News({
     required Map source,
-    required String author,
+    required String? author,
     required String title,
-    required String description,
+    required String? description,
     required String url,
-    required String urlToImage,
-    required String publishedAt,
+    required String? urlToImage,
+    required String? publishedAt,
     required String content,
   }) {
     _source = source;
@@ -30,7 +30,30 @@ class News {
   }
 
   factory News.fromJSON(Map<String, dynamic> json) {
-    if (json.isEmpty) {
+    try {
+      if (json.isEmpty) {
+        return News(
+            source: {},
+            author: "",
+            description: "",
+            url: "",
+            urlToImage: "",
+            publishedAt: "",
+            content: "",
+            title: "");
+      } else {
+        return News(
+            source: json["source"],
+            author: json["author"],
+            description: json["description"],
+            url: json["url"],
+            urlToImage: json["urlToImage"],
+            publishedAt: json["publishedAt"],
+            content: json["content"],
+            title: json["title"]);
+      }
+    } catch (Ex) {
+      print(Ex);
       return News(
           source: {},
           author: "",
@@ -40,16 +63,6 @@ class News {
           publishedAt: "",
           content: "",
           title: "");
-    } else {
-      return News(
-          source: json["source"],
-          author: json["author"],
-          description: json["description"],
-          url: json["url"],
-          urlToImage: json["urlToImage"],
-          publishedAt: json["publishedAt"],
-          content: json["content"],
-          title: json["title"]);
     }
   }
 
@@ -68,10 +81,10 @@ class News {
   }
 
   String get author {
-    if (_author.isEmpty) {
+    if (_author == null) {
       return "unknown";
     }
-    return _author;
+    return _author!;
   }
 
   String get title {
@@ -82,10 +95,10 @@ class News {
   }
 
   String get description {
-    if (_description.isEmpty) {
+    if (_description == null) {
       return "unknown";
     }
-    return _description;
+    return _description!;
   }
 
   String get url {
@@ -96,17 +109,17 @@ class News {
   }
 
   String get urlToImage {
-    if (_urlToImage.isEmpty) {
+    if (_urlToImage == null) {
       return "unknown";
     }
-    return _urlToImage;
+    return _urlToImage!;
   }
 
   String get publishedAt {
-    if (_publishedAt.isEmpty) {
+    if (_publishedAt == null) {
       return "unknown";
     }
-    return _publishedAt;
+    return _publishedAt!;
   }
 
   String get content {
