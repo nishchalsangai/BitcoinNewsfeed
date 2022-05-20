@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:untitled/core/toasts.dart';
 import 'package:untitled/models/Bookmarks.dart';
 import 'package:untitled/services/BookMarksService.dart';
 import 'package:untitled/services/NewsFeedService.dart';
 
+import '../core/AppTheme.dart';
 import '../models/News.dart';
 
 class HomeManager extends ChangeNotifier {
@@ -89,10 +91,12 @@ class HomeManager extends ChangeNotifier {
     if (checkBookmarkStatus(news)) {
       bookmarkId != null
           ? _bookMarksService.removeBookmark(bookmarkId).then((value) {
+              ShowToast(value.toString(), AppTheme.nearlyGreen);
               updateBookmarkBucket();
               notifyListeners();
             })
           : _bookMarksService.removeBookmarksFromNewsFeed(news.toMap(news)).then((value) {
+              ShowToast(value.toString(), AppTheme.nearlyGreen);
               updateBookmarkBucket();
               notifyListeners();
             });
@@ -101,6 +105,7 @@ class HomeManager extends ChangeNotifier {
       _bookMarksService
           .addBookmark(bookmarkId: id, userId: userId, news: news.toMap(news))
           .then((value) {
+        ShowToast(value.toString(), AppTheme.nearlyGreen);
         updateBookmarkBucket();
       });
     }

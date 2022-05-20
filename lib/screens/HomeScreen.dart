@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/managers/AuthManager.dart';
 import 'package:untitled/managers/HomeManager.dart';
+import '../core/AppTheme.dart';
 import 'Bookmarks.dart';
 import 'NewsFeed.dart';
 
@@ -28,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Color(0xFF075E54),
+        backgroundColor: AppTheme.nearlyGreen,
         centerTitle: true,
         title: Text(
           'News',

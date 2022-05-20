@@ -31,20 +31,18 @@ class BookMarksService {
     } on FirebaseException catch (e) {
       return e.message;
     }
-    return null;
+    return "Bookmark Added";
   }
 
   Future<String> removeBookmark(String bookmarkId) async {
     try {
-      await _bookmarks.doc(bookmarkId).delete().then((value) {
-        return "Removed from bookmarks";
-      }).catchError((error) {
+      await _bookmarks.doc(bookmarkId).delete().catchError((error) {
         return error.toString();
       });
     } catch (ex) {
       return ex.toString();
     }
-    return "";
+    return "Removed from bookmarks";
   }
 
   removeBookmarksFromNewsFeed(Map news) async {

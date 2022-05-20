@@ -7,7 +7,7 @@ class AppTheme {
   static const Color notWhite = Color(0xFFFAFAFA);
   static const Color nearlyWhite = Color(0xFFFDFEFF);
   static const Color nearlyBlue = Color(0xFF00B6F0);
-  static const Color nearlyGreen = Color(0xFF4cb34c);
+  static const Color nearlyGreen = Color(0xFF075E54);
   static const Color nearlyRed = Color(0xFFFF0000);
   static const Color secondary = Color(0xFF5ce1e6);
   static const Color lightBlue = Color(0xFFe6f8fe);
