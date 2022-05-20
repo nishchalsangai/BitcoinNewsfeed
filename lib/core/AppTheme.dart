@@ -118,9 +118,16 @@ class AppTheme {
 
   static TextStyle caption = TextStyle(
     fontWeight: FontWeight.w400,
-    fontSize: 12.sp,
+    fontSize: 10.sp,
     letterSpacing: 0.2,
     color: lightText, // was lightText
+  );
+
+  static TextStyle caption2 = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontSize: 12.sp,
+    letterSpacing: 0.2,
+    color: nearlyBlue, // was lightText
   );
 
   static TextStyle body3 = TextStyle(
