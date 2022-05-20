@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-class News {
+class News extends Equatable {
   late final Map _source;
   late final String? _author;
   late final String _title;
@@ -128,6 +129,11 @@ class News {
     }
     return _content;
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props =>
+      [_source, _author, _title, _description, _url, _urlToImage, _publishedAt, _content];
 }
 
 /*

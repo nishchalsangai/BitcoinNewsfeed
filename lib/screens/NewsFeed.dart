@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../core/AppTheme.dart';
+import '../core/widgets.dart';
 import '../managers/HomeManager.dart';
 
 class newsFeed extends StatelessWidget {
@@ -28,99 +29,12 @@ class newsFeed extends StatelessWidget {
                 itemCount: homeManager.newsBasket.length,
                 itemBuilder: (context, index) {
                   final n = homeManager.newsBasket[index];
-                  return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-                    padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 13.h),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16.r),
-                      color: Colors.white,
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: AppTheme.grey.withOpacity(0.2),
-                          blurRadius: 16,
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            homeManager.newsBasket[index].title,
-                            style: AppTheme.title,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 2.h),
-                                  child: RichText(
-                                    text: TextSpan(
-                                        text: "Source ",
-                                        style: AppTheme.caption,
-                                        children: [
-                                          TextSpan(
-                                            text: homeManager.newsBasket[index].sourceName,
-                                            style: AppTheme.caption2,
-                                          ),
-                                        ]),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 2.h),
-                                  child: RichText(
-                                    text: TextSpan(
-                                        text: "Published At ",
-                                        style: AppTheme.caption,
-                                        children: [
-                                          TextSpan(
-                                            text: homeManager.newsBasket[index].publishedAt,
-                                            style: AppTheme.caption2,
-                                          )
-                                        ]),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            IconButton(onPressed: () {}, icon: Icon(Icons.bookmark_add_outlined))
-                          ],
-                        ),
-                        SizedBox(
-                          height: 8.h,
-                        ),
-                        homeManager.newsBasket[index].urlToImage != "unknown"
-                            ? CachedNetworkImage(
-                                fit: BoxFit.contain,
-                                imageUrl: homeManager.newsBasket[index].urlToImage,
-                                width: MediaQuery.of(context).size.width,
-                                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                    Center(
-                                        child: CircularProgressIndicator(
-                                  value: downloadProgress.progress,
-                                  strokeWidth: 1,
-                                )),
-                                errorWidget: (context, url, error) => const SizedBox(),
-                              )
-                            : const SizedBox(),
-                        SizedBox(
-                          height: 8.h,
-                        ),
-                        homeManager.newsBasket[index].content != "unknown"
-                            ? Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8.0.w),
-                                child: Text(
-                                  homeManager.newsBasket[index].content,
-                                  style: AppTheme.body2,
-                                ),
-                              )
-                            : const SizedBox(),
-                      ],
-                    ),
+                  return NewsCard(
+                    title: homeManager.newsBasket[index].title,
+                    sourceName: homeManager.newsBasket[index].sourceName,
+                    publishedAt: homeManager.newsBasket[index].publishedAt,
+                    imgurl: homeManager.newsBasket[index].urlToImage,
+                    summary: homeManager.newsBasket[index].content,
                   );
                 }),
             SizedBox(
@@ -128,11 +42,11 @@ class newsFeed extends StatelessWidget {
             ),
             homeManager.isLoading
                 ? const Center(
-                  child: CircularProgressIndicator(
-                    color: Color(0xFF075E54),
-                    strokeWidth: 1,
-                  ),
-                )
+                    child: CircularProgressIndicator(
+                      color: Color(0xFF075E54),
+                      strokeWidth: 1,
+                    ),
+                  )
                 : const SizedBox(),
             SizedBox(
               height: 30.h,

@@ -30,7 +30,7 @@ class HomeManager extends ChangeNotifier {
   _scrollListener() async {
     if (_scrollControl.offset >= _scrollControl.position.maxScrollExtent &&
         !_scrollControl.position.outOfRange) {
-      Future.delayed(Duration(seconds: 2)).then((value) {
+      Future.delayed(const Duration(seconds: 2)).then((value) {
         onLoading();
         toggleLoading();
       });
@@ -39,7 +39,6 @@ class HomeManager extends ChangeNotifier {
 
   NewsBasket() {
     _newsStream = _newsFeedService.newsBucketStream.listen((news) {
-      print(news.description);
       _newsBasket.add(news);
       notifyListeners();
     });
