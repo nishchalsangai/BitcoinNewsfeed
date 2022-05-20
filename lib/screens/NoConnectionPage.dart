@@ -8,7 +8,7 @@ class NoConnectionPage extends StatelessWidget {
     return const Scaffold(
       body: Center(
         child: Text(
-          "You dont have active internet connection",
+          "You don't have active internet connection",
           style: TextStyle(fontSize: 20.0),
         ),
       ),

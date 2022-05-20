@@ -1,132 +1,64 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:untitled/core/AppTheme.dart';
-import 'package:untitled/services/NewsFeedService.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/managers/AuthManager.dart';
+import 'package:untitled/managers/HomeManager.dart';
+import 'NewsFeed.dart';
 
-import '../models/News.dart';
-
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder(
-        future: NewsFeedService.getNewsFeed(),
-        builder: (context, snapshot) {
-          dynamic news = snapshot.data;
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(child: CircularProgressIndicator());
-            default:
-              if (snapshot.hasError) {
-                return Center(child: Text('Some error occurred!'));
-              } else {
-                print(news);
-                return buildNews(news);
-              }
-          }
-        },
-      ),
-    );
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
   }
 
-  Widget buildNews(List<News> news) {
-    return ListView.builder(
-        itemCount: news.length,
-        itemBuilder: (context, index) {
-          final n = news[index];
-          print(news[index].urlToImage);
-          return Container(
-            margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-            padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 13.h),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16.r),
-              color: Colors.white,
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: AppTheme.grey.withOpacity(0.2),
-                  blurRadius: 16,
-                ),
-              ],
+  Widget build(BuildContext context) {
+    final authManager = Provider.of<AuthStateManager>(context, listen: true);
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Color(0xFF075E54),
+        centerTitle: true,
+        title: Text(
+          'News',
+          style: TextStyle(fontSize: 20.0.sp, fontWeight: FontWeight.bold),
+        ),
+        actions: [IconButton(onPressed: authManager.signOut, icon: const Icon(Icons.logout))],
+        bottom: TabBar(
+          controller: _tabController,
+          indicatorColor: Colors.white,
+          indicatorWeight: 3,
+          indicatorPadding: const EdgeInsets.all(0),
+          indicatorSize: TabBarIndicatorSize.tab,
+          tabs: const [
+            Tab(
+              text: 'News Feed',
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    news[index].title,
-                    style: AppTheme.title,
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 2.h),
-                          child: RichText(
-                            text: TextSpan(text: "Source ", style: AppTheme.caption, children: [
-                              TextSpan(
-                                text: news[index].sourceName,
-                                style: AppTheme.caption2,
-                              ),
-                            ]),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 2.h),
-                          child: RichText(
-                            text:
-                                TextSpan(text: "Published At ", style: AppTheme.caption, children: [
-                              TextSpan(
-                                text: news[index].publishedAt,
-                                style: AppTheme.caption2,
-                              )
-                            ]),
-                          ),
-                        ),
-                      ],
-                    ),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.bookmark_add_outlined))
-                  ],
-                ),
-                SizedBox(
-                  height: 8.h,
-                ),
-                news[index].urlToImage != "unknown"
-                    ? CachedNetworkImage(
-                        fit: BoxFit.contain,
-                        imageUrl: news[index].urlToImage,
-                        width: MediaQuery.of(context).size.width,
-                        progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-                            child: CircularProgressIndicator(
-                          value: downloadProgress.progress,
-                          strokeWidth: 1,
-                        )),
-                        errorWidget: (context, url, error) => const SizedBox(),
-                      )
-                    : const SizedBox(),
-                SizedBox(
-                  height: 8.h,
-                ),
-                news[index].content != "unknown"
-                    ? Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0.w),
-                        child: Text(
-                          news[index].content,
-                          style: AppTheme.body2,
-                        ),
-                      )
-                    : const SizedBox(),
-              ],
-            ),
-          );
-        });
+            Tab(
+              text: 'Bookmarks',
+            )
+          ],
+        ),
+      ),
+      body: SafeArea(
+        child: TabBarView(
+          controller: _tabController,
+          children: const [
+            newsFeed(),
+            Text("Bookmarks"),
+          ],
+        ),
+      ),
+    );
   }
 }

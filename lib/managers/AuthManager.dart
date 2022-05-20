@@ -3,7 +3,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-
 import '../services/AuthenticationService.dart';
 
 class AuthStateManager extends ChangeNotifier {
@@ -49,14 +48,14 @@ class AuthStateManager extends ChangeNotifier {
   void checkConnectionStatus() async {
     _connectionSubscription =
         Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-          if (result == ConnectivityResult.mobile || result == ConnectivityResult.wifi) {
-            _activeConnection = true;
-            notifyListeners();
-          } else {
-            _activeConnection = false;
-            notifyListeners();
-          }
-        });
+      if (result == ConnectivityResult.mobile || result == ConnectivityResult.wifi) {
+        _activeConnection = true;
+        notifyListeners();
+      } else {
+        _activeConnection = false;
+        notifyListeners();
+      }
+    });
   }
 
   ///Initialization of Auth Stream
@@ -79,10 +78,9 @@ class AuthStateManager extends ChangeNotifier {
   ///
   initiateGoogleSignUp() {
     toggleIsLoading();
-    _authService.signInWithGoogle();
+    _authService.signInWithGoogle().then((value) => print(value));
     toggleIsLoading();
   }
-
 
   userWasWelcomed() {
     _newUserFlag = false;

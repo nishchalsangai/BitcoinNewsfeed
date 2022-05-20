@@ -29,6 +29,7 @@ class UserDataService {
         'userId': userId,
         'userName': userName,
         'userEmail': userEmail,
+        'userCreatedTime': DateTime.now().millisecondsSinceEpoch,
       }).then((value) => print("User Added"));
     } on FirebaseException catch (e) {
       return e.message;

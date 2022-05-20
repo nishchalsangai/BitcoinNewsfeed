@@ -2,15 +2,25 @@ class User {
   late String _userId;
   late String _emailId;
   late String _displayName;
+  late double? _userCreatedTime;
 
-  User({required String userId, required String emailId, required String displayName}) {
+  User(
+      {required String userId,
+      required String emailId,
+      required String displayName,
+      required double? userCreatedTime}) {
     _userId = userId;
     _emailId = emailId;
     _displayName = displayName;
+    _userCreatedTime = userCreatedTime;
   }
 
   factory User.fromMap(Map json) {
-    return User(userId: json["userId"], emailId: json["emailId"], displayName: json["displayName"]);
+    return User(
+        userId: json["userId"],
+        emailId: json["emailId"],
+        displayName: json["displayName"],
+        userCreatedTime: json["userCreatedTime"]);
   }
 
   String get userId {
@@ -32,5 +42,12 @@ class User {
       return "Display is Empty";
     }
     return _displayName;
+  }
+
+  double get userCreatedTime {
+    if (_userCreatedTime == null) {
+      return -1;
+    }
+    return _userCreatedTime!;
   }
 }

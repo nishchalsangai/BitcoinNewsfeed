@@ -1,68 +1,53 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:untitled/services/NewsFeedService.dart';
 
 import '../models/News.dart';
 
 class HomeManager extends ChangeNotifier {
   late bool _isLoading;
-
+  late int _currentPage;
   late NewsFeedService _newsFeedService;
-  late ScrollController _newsControl;
-  late bool newsAvailable;
-  late StreamSubscription _newsBasketStream;
   late List<News> _newsBasket;
+  late StreamSubscription _newsStream;
+  late RefreshController refreshController;
 
   late final userId;
   HomeManager(this.userId) {
-    // _newsFeedService = NewsFeedService();
-    _newsControl = ScrollController();
-    _newsControl.addListener(_scrollListener);
+    _newsFeedService = NewsFeedService();
+    _currentPage = 1;
     _newsBasket = [];
-    // startNewsBasketSubscription();
+    refreshController = RefreshController(initialRefresh: true);
+    NewsBasket();
   }
 
-  _scrollListener() async {
-    if (_newsControl.offset >= _newsControl.position.maxScrollExtent &&
-        !_newsControl.position.outOfRange &&
-        newsAvailable) {
-/*      loadMoreNews();*/
-      toggleLoading();
+  NewsBasket() {
+    _newsStream = _newsFeedService.newsBucketStream.listen((news) {
+      _newsBasket.add(news);
+      notifyListeners();
+    });
+  }
+
+  onRefresh() async {
+    final result = await _newsFeedService.getNewsFeed(isRefresh: true);
+    if (result) {
+      refreshController.refreshCompleted();
+    } else {
+      refreshController.refreshFailed();
     }
   }
 
-  // void startNewsBasketSubscription() {
-  //   _isLoading = true;
-  //   newsAvailable = true;
-  //   notifyListeners();
-  //   print("Hello starting item subs \n\n\n\n\n");
-  //   _newsBasketStream = _newsFeedService.getNewsFeed().asStream().listen((newsBasket) {
-  //     if (newsBasket != null) {
-  //       _newsBasket = newsBasket;
-  //       print("${_newsBasket.length} is \n\n\n\n");
-  //       if (newsBasket.length < 10) {
-  //         newsAvailable = false;
-  //       }
-  //       if (newsBasket.isNotEmpty) {
-  //         // lastTime = productBasket[productBasket.length - 1].productListingTime;
-  //         _isLoading = false;
-  //         notifyListeners();
-  //       }
-  //     } else {}
-  //   });
-  // }
-
-  Future<void> loadMoreProducts() async {
-    /* await _newsFeedService.getNextProductsBasket(lastTime).then((nextProductBasket) {
-      _productBasket = [...productBasket, ...nextProductBasket];
-      lastTime = nextProductBasket[nextProductBasket.length - 1].productListingTime;
-      if (nextProductBasket.length < 10) {
-        productAvailable = false;
-      }
-    });*/
-    _isLoading = false;
-    notifyListeners();
+  onLoading() async {
+    _currentPage++;
+    final result = await _newsFeedService.getNewsFeed(currentPage: _currentPage);
+    if (result) {
+      refreshController.loadComplete();
+      notifyListeners();
+    } else {
+      refreshController.loadFailed();
+    }
   }
 
   toggleLoading() {
@@ -70,7 +55,12 @@ class HomeManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<News> get newsBasket {
+    return _newsBasket;
+  }
+
   bool get isLoading {
     return _isLoading;
   }
+
 }

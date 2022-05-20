@@ -20,7 +20,7 @@ class UserManager extends ChangeNotifier {
       _userService = UserDataService(userId: _userId);
       startUserDataSubscription();
     } else {
-      _user = User(userId: '', displayName: '', emailId: '');
+      _user = User(userId: '', displayName: '', emailId: '', userCreatedTime: null);
     }
   }
 
