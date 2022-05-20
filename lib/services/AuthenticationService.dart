@@ -39,10 +39,10 @@ class AuthenticationService {
 
         user = userCredential.user;
 
-        UserDataService().checkUserExisted(user!.uid).then((value) {
+        UserDataService(userId: user!.uid).checkUserExisted(user.uid).then((value) {
           if (value == false) {
-            UserDataService().addUser(
-              userId: user!.uid,
+            UserDataService(userId: user!.uid).addUser(
+              userId: user.uid,
               userName: user.displayName!,
               userEmail: user.email!,
             );
