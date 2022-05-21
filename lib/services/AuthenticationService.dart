@@ -8,6 +8,8 @@ class AuthenticationService {
 
   bool _newUserFlag = false;
 
+  bool checkUserExisted = false;
+
   AuthenticationService(this._firebaseAuth);
 
   //for authentication changes
@@ -39,7 +41,8 @@ class AuthenticationService {
 
         user = userCredential.user;
 
-       await UserDataService(userId: user!.uid).checkUserExisted(user.uid).then((value) {
+        await UserDataService(userId: user!.uid).checkUserExisted(user.uid).then((value) {
+          checkUserExisted = value;
           if (value == false) {
             UserDataService(userId: user!.uid).addUser(
               userId: user.uid,
@@ -52,7 +55,9 @@ class AuthenticationService {
           }
         });
       }
-      if (user != null) {
+      if (checkUserExisted && user != null) {
+        return "Signed in using google";
+      } else if (!checkUserExisted && user != null) {
         return "Signed up using google";
       }
       return "Please sign in";

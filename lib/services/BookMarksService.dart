@@ -47,32 +47,39 @@ class BookMarksService {
 
   removeBookmarksFromNewsFeed(Map news) async {
     List<Bookmarks> bookmarksId = [];
-    await _bookmarks
-        .where("userId", isEqualTo: _userId)
-        .where("news", isEqualTo: news)
-        .get()
-        .then((snap) async {
-      for (var bookmarkSnap in snap.docs) {
-        final a = Bookmarks.fromMap(bookmarkSnap.data() as Map<String, dynamic>);
-        print(a.bookMarksId);
-        bookmarksId.add(Bookmarks.fromMap(bookmarkSnap.data() as Map<String, dynamic>));
-      }
-    });
+    try {
+      await _bookmarks
+          .where("userId", isEqualTo: _userId)
+          .where("news", isEqualTo: news)
+          .get()
+          .then((snap) async {
+        for (var bookmarkSnap in snap.docs) {
+          final a = Bookmarks.fromMap(bookmarkSnap.data() as Map<String, dynamic>);
+          bookmarksId.add(Bookmarks.fromMap(bookmarkSnap.data() as Map<String, dynamic>));
+        }
+      });
+    } catch (ex) {
+      return ex;
+    }
     return removeBookmark(bookmarksId[0].bookMarksId);
   }
 
-  Future<List<Bookmarks>> get allBookmarks async {
+  get allBookmarks async {
     List<Bookmarks> bookmarkBasket = [];
-    await _bookmarks
-        .where("userId", isEqualTo: _userId)
-        .orderBy("bookmarkAddedTime")
-        .get()
-        .then((snap) async {
-      for (var bookmarkSnap in snap.docs) {
-        print(bookmarkSnap.data);
-        bookmarkBasket.add(Bookmarks.fromMap(bookmarkSnap.data() as Map<String, dynamic>));
-      }
-    });
+    try {
+      await _bookmarks
+          .where("userId", isEqualTo: _userId)
+          .orderBy("bookmarkAddedTime")
+          .get()
+          .then((snap) async {
+        for (var bookmarkSnap in snap.docs) {
+          print(bookmarkSnap.data);
+          bookmarkBasket.add(Bookmarks.fromMap(bookmarkSnap.data() as Map<String, dynamic>));
+        }
+      });
+    } catch (ex) {
+      return ex;
+    }
     return bookmarkBasket;
   }
 }

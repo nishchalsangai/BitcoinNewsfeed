@@ -27,16 +27,7 @@ class NewsCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
       padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 13.h),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16.r),
-        color: Colors.white,
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: AppTheme.grey.withOpacity(0.2),
-            blurRadius: 16,
-          ),
-        ],
-      ),
+      decoration: AppTheme.inputContainer,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

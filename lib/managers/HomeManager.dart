@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:untitled/core/toasts.dart';
 import 'package:untitled/models/Bookmarks.dart';
 import 'package:untitled/services/BookMarksService.dart';
@@ -21,14 +20,14 @@ class HomeManager extends ChangeNotifier {
   late bool newsAvailable;
   late List<Bookmarks> _bookmarksBucket;
   late List<News> _bookmarkedNew;
-  late final userId;
-  late List<bool> isSaved;
+  late final _userId;
 
-  HomeManager(this.userId) {
-    isSaved = [];
+  final GlobalKey<ScaffoldState> _scaffoldKey=  GlobalKey<ScaffoldState>();
+
+  HomeManager(this._userId) {
     _isLoading = true;
     _newsFeedService = NewsFeedService();
-    _bookMarksService = BookMarksService(userId);
+    _bookMarksService = BookMarksService(_userId);
     _currentPage = 0;
     _newsBasket = [];
     _bookmarksBucket = [];
@@ -40,6 +39,10 @@ class HomeManager extends ChangeNotifier {
     updateBookmarkBucket();
   }
 
+
+   tryAgain(){
+    HomeManager(_userId);
+   }
   _scrollListener() async {
     if (_scrollControl.offset >= _scrollControl.position.maxScrollExtent &&
         !_scrollControl.position.outOfRange) {
@@ -52,7 +55,6 @@ class HomeManager extends ChangeNotifier {
 
   NewsBasket() {
     _newsStream = _newsFeedService.newsBucketStream.listen((news) {
-      isSaved.add(false);
       _newsBasket.add(news);
       notifyListeners();
     });
@@ -79,7 +81,9 @@ class HomeManager extends ChangeNotifier {
     final result = await _newsFeedService.getNewsFeed(currentPage: _currentPage);
     if (result) {
       notifyListeners();
-    } else {}
+    } else {
+      toggleLoading();
+    }
   }
 
   toggleLoading() {
@@ -91,21 +95,21 @@ class HomeManager extends ChangeNotifier {
     if (checkBookmarkStatus(news)) {
       bookmarkId != null
           ? _bookMarksService.removeBookmark(bookmarkId).then((value) {
-              ShowToast(value.toString(), AppTheme.nearlyGreen);
+              ShowToast(value.toString(), AppTheme.nearlyGreen, 1);
               updateBookmarkBucket();
               notifyListeners();
             })
           : _bookMarksService.removeBookmarksFromNewsFeed(news.toMap(news)).then((value) {
-              ShowToast(value.toString(), AppTheme.nearlyGreen);
+              ShowToast(value.toString(), AppTheme.nearlyGreen, 1);
               updateBookmarkBucket();
               notifyListeners();
             });
     } else {
       final id = await _bookMarksService.generateNewBookmark();
       _bookMarksService
-          .addBookmark(bookmarkId: id, userId: userId, news: news.toMap(news))
+          .addBookmark(bookmarkId: id, userId: _userId, news: news.toMap(news))
           .then((value) {
-        ShowToast(value.toString(), AppTheme.nearlyGreen);
+        ShowToast(value.toString(), AppTheme.nearlyGreen, 1);
         updateBookmarkBucket();
       });
     }
@@ -126,6 +130,17 @@ class HomeManager extends ChangeNotifier {
   List<Bookmarks> get bookmarkBucket {
     return _bookmarksBucket;
   }
+
+  Key get scaffoldKey {
+    return _scaffoldKey;
+  }
+
+
+
+  void showInSnackBarNewsFeed(String value) {
+    _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text(value)));
+  }
+
 
   @override
   void dispose() {

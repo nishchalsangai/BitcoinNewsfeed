@@ -3,6 +3,6 @@ class Secret{
 
   Secret._();
 
-  static const String newsApiKey = "d7c0382ebf2a4c86b6ac4dc552a50e1e";
+  static const String newsApiKey = "ef995721cb8d45b7a309bd6fa13505bb";
 
 }

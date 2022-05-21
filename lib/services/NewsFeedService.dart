@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:untitled/core/Secret.dart';
+import 'package:untitled/core/toasts.dart';
 
 import '../models/News.dart';
 import 'package:http/http.dart' as http;
@@ -24,7 +26,7 @@ class NewsFeedService {
         String status = jsonDecode(response.body)["status"];
         if (status == "error") {
           _error = jsonDecode(response.body);
-          print(_error);
+          ShowToast(_error["message"], Colors.red, 10);
           return false;
         } else {
           List<dynamic> raw = jsonDecode(response.body)["articles"];
@@ -35,10 +37,12 @@ class NewsFeedService {
         }
       } else {
         _error = jsonDecode(response.body);
+        ShowToast(_error["message"], Colors.red, 5);
         return false;
       }
     } catch (ex) {
       print(ex);
+      ShowToast(ex.toString(), Colors.red, 5);
       return false;
     }
   }

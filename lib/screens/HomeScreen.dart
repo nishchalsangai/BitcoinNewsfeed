@@ -26,7 +26,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Widget build(BuildContext context) {
     final authManager = Provider.of<AuthStateManager>(context, listen: true);
+    final homeManager = Provider.of<HomeManager>(context, listen: true);
     return Scaffold(
+      key: homeManager.scaffoldKey,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: AppTheme.nearlyGreen,
@@ -53,13 +55,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
       ),
       body: SafeArea(
-        child: TabBarView(
-          controller: _tabController,
-          children: const [
-            newsFeed(),
-            BookmarksScreen(),
-          ],
-        ),
+        child: homeManager.newsBasket.isNotEmpty
+            ? TabBarView(
+                controller: _tabController,
+                children: const [
+                  newsFeed(),
+                  BookmarksScreen(),
+                ],
+              )
+            : Center(
+                child: ElevatedButton(
+                  onPressed: () => homeManager.tryAgain(),
+                  style: ElevatedButton.styleFrom(
+                    primary: AppTheme.nearlyGreen,
+                  ),
+                  child: const Text(
+                    "Refresh",
+                  ),
+                ),
+              ),
       ),
     );
   }

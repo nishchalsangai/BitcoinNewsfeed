@@ -8,13 +8,9 @@ class AppTheme {
   static const Color nearlyWhite = Color(0xFFFDFEFF);
   static const Color nearlyBlue = Color(0xFF00B6F0);
   static const Color nearlyGreen = Color(0xFF075E54);
-  static const Color nearlyRed = Color(0xFFFF0000);
-  static const Color secondary = Color(0xFF5ce1e6);
-  static const Color lightBlue = Color(0xFFe6f8fe);
-  static const Color nearlyBlack = Color(0xFF1c1d1f);
-  static const Color light_grey = Color(0xFFF9F9F9);
   static const Color grey = Color(0xFF3A5160);
   static const Color dark_grey = Color(0xFF26293a);
+
 
   static const Color darkText = Color(0xFF2B2B2B);
   static const Color darkerText = Color(0xFF171717);
@@ -32,11 +28,7 @@ class AppTheme {
     color: grey,
   );
 
-  static TextStyle bottom_info = TextStyle(
-    color: Color(0xffA6B0BD),
-    fontWeight: FontWeight.w500,
-    fontSize: 14.sp,
-  );
+
 
   static TextStyle btn_text = TextStyle(
       letterSpacing: 1.725, fontWeight: FontWeight.w600, fontSize: 18.sp, color: Colors.white);
@@ -83,8 +75,7 @@ class AppTheme {
     ],
   );
 
-  static TextStyle intro_head = TextStyle(
-      fontSize: 30.sp, letterSpacing: .15, fontWeight: FontWeight.w700, color: AppTheme.dark_grey);
+
 
   static TextStyle intro_para = TextStyle(
       fontSize: 18.sp, letterSpacing: .15, fontWeight: FontWeight.w400, color: AppTheme.lightText);
@@ -96,12 +87,7 @@ class AppTheme {
     color: darkerText,
   );
 
-  static TextStyle subtitle = TextStyle(
-    fontWeight: FontWeight.w400,
-    fontSize: 14.sp,
-    letterSpacing: -0.04,
-    color: darkText,
-  );
+
 
   static TextStyle body2 = TextStyle(
     fontWeight: FontWeight.w400,
@@ -110,11 +96,7 @@ class AppTheme {
     color: darkText,
   );
 
-  static TextStyle body1 = TextStyle(
-    fontWeight: FontWeight.w400,
-    fontSize: 16.sp,
-    color: lightText,
-  );
+
 
   static TextStyle caption = TextStyle(
     fontWeight: FontWeight.w400,

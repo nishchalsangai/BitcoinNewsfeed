@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:untitled/core/toasts.dart';
 
+import '../core/AppTheme.dart';
 import '../services/AuthenticationService.dart';
 
 class AuthStateManager extends ChangeNotifier {
@@ -78,8 +80,10 @@ class AuthStateManager extends ChangeNotifier {
   ///
   initiateGoogleSignUp() {
     toggleIsLoading();
-    _authService.signInWithGoogle().then((value) => print(value));
-    toggleIsLoading();
+    _authService.signInWithGoogle().then((value) {
+      toggleIsLoading();
+      ShowToast(value!, AppTheme.nearlyGreen, 1);
+    });
   }
 
   userWasWelcomed() {

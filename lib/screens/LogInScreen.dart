@@ -15,7 +15,7 @@ class LogInScreen extends StatelessWidget {
         backgroundColor: Colors.grey.shade100,
         body: SafeArea(
           child: Padding(
-            padding: EdgeInsets.all(32.0),
+            padding: EdgeInsets.all(32.0.w),
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Column(
@@ -27,38 +27,14 @@ class LogInScreen extends StatelessWidget {
                     height: 300.h,
                     width: 300.w,
                   ),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: /*isLoading
-                            ? null
-                            :*/
-                          () {
-                        credentialsManager.initiateGoogleSignUp();
-                        /*  context
-                              .read<AuthenticationService>()
-                              .signInWithGoogle()
-                              .then((value) {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            if (value == "Signed in using google" ||
-                                value == "Signed up using google") {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text('$value'),
-                                backgroundColor: AppTheme.nearlyBlue,
-                              ));
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text('$value'),
-                                backgroundColor: Colors.red,
-                              ));
-                            }
-                          }).catchError((error) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('${error.message}'),
-                              backgroundColor: Colors.red,
-                            ));
-                          });*/
-                      },
+                      onPressed: credentialsManager.isLoading
+                          ? null
+                          : () {
+                              credentialsManager.initiateGoogleSignUp();
+                            },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.r),
@@ -67,30 +43,30 @@ class LogInScreen extends StatelessWidget {
                         shadowColor: AppTheme.chipBackground,
                         padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 12.h),
                       ),
-                      child: /*isLoading
-                            ? CircularProgressIndicator(
-                          color: AppTheme.nearlyBlue,
-                          backgroundColor: AppTheme.dark_grey,
-                        )
-                            :*/
-                          Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                                radius: 12.r,
-                                backgroundImage: const AssetImage('assets/images/google_logo.jpg')),
-                            SizedBox(
-                              width: 8.w,
+                      child: credentialsManager.isLoading
+                          ? const CircularProgressIndicator(
+                              color: AppTheme.nearlyGreen,
+                              strokeWidth: 1,
+                            )
+                          : Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CircleAvatar(
+                                      radius: 12.r,
+                                      backgroundImage:
+                                          const AssetImage('assets/images/google_logo.jpg')),
+                                  SizedBox(
+                                    width: 8.w,
+                                  ),
+                                  Text('Continue with Google',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 17.sp,
+                                          color: AppTheme.deactivatedText)),
+                                ],
+                              ),
                             ),
-                            Text('Continue with Google',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 17.sp,
-                                    color: AppTheme.deactivatedText)),
-                          ],
-                        ),
-                      ),
                     ),
                   ),
                 ],
