@@ -17,14 +17,15 @@ class HomeManager extends ChangeNotifier {
   late List<News> _newsBasket;
   late ScrollController _scrollControl;
   late StreamSubscription _newsStream;
-  late bool newsAvailable;
   late List<Bookmarks> _bookmarksBucket;
   late List<News> _bookmarkedNew;
   late final _userId;
+  late bool _bookmarkFlag;
 
-  final GlobalKey<ScaffoldState> _scaffoldKey=  GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   HomeManager(this._userId) {
+    _bookmarkFlag = false;
     _isLoading = true;
     _newsFeedService = NewsFeedService();
     _bookMarksService = BookMarksService(_userId);
@@ -39,10 +40,15 @@ class HomeManager extends ChangeNotifier {
     updateBookmarkBucket();
   }
 
+  toggleBookmarkFlag() {
+    _bookmarkFlag = !_bookmarkFlag;
+    notifyListeners();
+  }
 
-   tryAgain(){
+  tryAgain() {
     HomeManager(_userId);
-   }
+  }
+
   _scrollListener() async {
     if (_scrollControl.offset >= _scrollControl.position.maxScrollExtent &&
         !_scrollControl.position.outOfRange) {
@@ -92,16 +98,19 @@ class HomeManager extends ChangeNotifier {
   }
 
   addAndRemoveBookmark(News news, String? bookmarkId) async {
+    toggleBookmarkFlag();
     if (checkBookmarkStatus(news)) {
       bookmarkId != null
           ? _bookMarksService.removeBookmark(bookmarkId).then((value) {
               ShowToast(value.toString(), AppTheme.nearlyGreen, 1);
               updateBookmarkBucket();
+              toggleBookmarkFlag();
               notifyListeners();
             })
           : _bookMarksService.removeBookmarksFromNewsFeed(news.toMap(news)).then((value) {
               ShowToast(value.toString(), AppTheme.nearlyGreen, 1);
               updateBookmarkBucket();
+              toggleBookmarkFlag();
               notifyListeners();
             });
     } else {
@@ -111,8 +120,13 @@ class HomeManager extends ChangeNotifier {
           .then((value) {
         ShowToast(value.toString(), AppTheme.nearlyGreen, 1);
         updateBookmarkBucket();
+        toggleBookmarkFlag();
       });
     }
+  }
+
+  bool get bookmarkFlag {
+    return _bookmarkFlag;
   }
 
   List<News> get newsBasket {
@@ -135,12 +149,9 @@ class HomeManager extends ChangeNotifier {
     return _scaffoldKey;
   }
 
-
-
   void showInSnackBarNewsFeed(String value) {
     _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text(value)));
   }
-
 
   @override
   void dispose() {

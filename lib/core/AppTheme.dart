@@ -63,6 +63,7 @@ class AppTheme {
   );
 
   static BoxDecoration inputContainer = BoxDecoration(
+    color: Colors.white,
     borderRadius: BorderRadius.all(
       Radius.circular(16.r),
     ),

@@ -33,7 +33,8 @@ class BookmarksScreen extends StatelessWidget {
                     summary: bookmarkNews.content,
                     addOrRemove: () => homeManager.addAndRemoveBookmark(
                         bookmarkNews, homeManager.bookmarkBucket[index].bookMarksId),
-                    iconSwitch: false,
+                    iconSwitch: homeManager.checkBookmarkStatus(bookmarkNews),
+                    onPressFlag: homeManager.bookmarkFlag,
                   );
                 }),
             SizedBox(

@@ -33,7 +33,8 @@ class newsFeed extends StatelessWidget {
                     summary: homeManager.newsBasket[index].content,
                     addOrRemove: () =>
                         homeManager.addAndRemoveBookmark(homeManager.newsBasket[index], null),
-                    iconSwitch: false,
+                    iconSwitch: homeManager.checkBookmarkStatus(homeManager.newsBasket[index]),
+                    onPressFlag: homeManager.bookmarkFlag,
                   );
                 }),
             SizedBox(

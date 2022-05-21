@@ -14,12 +14,14 @@ class NewsCard extends StatelessWidget {
     required this.summary,
     required this.addOrRemove,
     required this.iconSwitch,
+    required this.onPressFlag
   }) : super(key: key);
   final String title;
   final String sourceName;
   final String publishedAt;
   final String imgurl;
   final String summary;
+  final bool onPressFlag;
   final dynamic addOrRemove;
   final bool iconSwitch;
   @override
@@ -69,7 +71,7 @@ class NewsCard extends StatelessWidget {
                 ],
               ),
               IconButton(
-                  onPressed: addOrRemove,
+                  onPressed: onPressFlag ? null : addOrRemove,
                   icon: iconSwitch
                       ? const Icon(Icons.bookmark)
                       : const Icon(Icons.bookmark_add_outlined))
