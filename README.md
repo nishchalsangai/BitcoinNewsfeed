@@ -23,6 +23,6 @@ When adding and removing bookmarks you will get the toast if you face any error 
 
 
 ## Data Modeling and Validation
-Data modeling and validation are done according to the need of news card. It will show "unknown" if your data is provided by api or something went wrong with it. It will show the newsCard with information asked in the problem statement. 
+Data modeling and validation are done according to the need of news card. It will show "unknown" if your data is provided by api is wrong. It will show the newsCard with information asked in the problem statement. 
 
 
