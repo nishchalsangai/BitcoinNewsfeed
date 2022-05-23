@@ -9,6 +9,8 @@ This project is a starting point for a Flutter application.
 ## No Internet Connection Screen
 Whenever you are not connected to the internet it will show a screen and doesn't allow you to proceed further. You have to check the internet connection and then if you are connected to internet it will allow you to explore the app
 
+## Pagination
+On every page 6 news will be loaded first. After scrolling down and reaching the end of 6 news it will load other 6 news.
 
 ## API Related Error
 When you keep scrolling down api will throw an exception that you have exceeded the request limit of the developer API.
