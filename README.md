@@ -14,7 +14,7 @@ On every page 6 news will be loaded first. After scrolling down and reaching the
 
 ## API Related Error
 When you keep scrolling down api will throw an exception that you have exceeded the request limit of the developer API.
-When you did more than 50 requests in 12 hourse. It will through error regarding that which will be shown through toasts.
+When you did more than 50 requests in 12 hours. It will through error regarding that which will be shown through toasts.
 
 
 ## Add and Remove Bookmarks
